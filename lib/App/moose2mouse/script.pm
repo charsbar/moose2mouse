@@ -88,8 +88,8 @@ sub filter {
     $plugin->filter($content_ref, $opts) if $plugin->can('filter');
   }
 
-  unless ($opts->{base} eq 'Throwable') {
-    $$content_ref =~ s/($opts->{base})/$1::Mouse/g;
+  unless ($opts->{base_class} eq 'Throwable') {
+    $$content_ref =~ s/($opts->{base_class})/$1::Mouse/g;
     $$content_ref =~ s/($opts->{dist})/$1-Mouse/g;
   }
 
