@@ -8,6 +8,7 @@ use Furl;
 use JSON::XS;
 use Archive::Tar;
 use Path::Extended;
+use Compress::Zlib;
 use IO::String;
 
 sub options {qw/directory|dir=s/}
@@ -33,7 +34,7 @@ sub run {
 
   my $tarball = $self->_get($url);
   my $tar = Archive::Tar->new;
-  $tar->read(IO::String->new($tarball));
+  $tar->read(IO::String->new(Compress::Zlib::memGunzip($tarball)));
   for my $orgpath ($tar->list_files) {
     $self->log(debug => $orgpath) if $self->{verbose};
     (my $path = $orgpath) =~ s{^$dist[^/]+/}{};
